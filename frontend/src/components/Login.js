@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // This stops page reload
+    e.preventDefault();
     setMsg('');
 
     try {
@@ -28,25 +28,25 @@ const Login = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#000',
-      color: '#0f0',
+      background: '#000000ff',
+      color: '#2CD3E1',
       fontFamily: "'Courier New', monospace",
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
     }}>
       <div style={{
-        border: '1px solid #333',
+        border: '3px solid #333',
         padding: '60px',
         background: '#000',
-        boxShadow: '0 0 30px rgba(0,255,0,0.3)',
+        boxShadow: '0px 0px 40px #2CD3E1',
         width: '400px'
       }}>
-        <h1 style={{ textAlign: 'center', letterSpacing: '10px', marginBottom: '40px' }}>
+        <h1 style={{ textAlign: 'center', letterSpacing: '10px', marginBottom: '35px', fontSize: '28px', fontWeight: '550' }}>
           MINDCARE
         </h1>
 
-        {msg && <p style={{ color: msg.includes('Wrong') ? '#f00' : '#0f0', textAlign: 'center' }}>{msg}</p>}
+        {msg && <p style={{ color: msg.includes('Wrong') ? '#f00' : '#2CD3E1', textAlign: 'center' }}>{msg}</p>}
 
         <form onSubmit={handleLogin}>
           <input
@@ -55,7 +55,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@college.edu"
             required
-            style={{ width: '100%', padding: '16px', margin: '15px 0', background: '#000', border: '1px solid #333', color: '#0f0' }}
+            style={{ width: '100%', padding: '16px', margin: '15px 0', background: '#000', border: '1.5px solid #2CD3E1', color: '#ffffff' }}
           />
           <input
             type="password"
@@ -63,17 +63,18 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
             required
-            style={{ width: '100%', padding: '16px', margin: '15px 0', background: '#000', border: '1px solid #333', color: '#0f0' }}
+            style={{ width: '100%', padding: '16px', margin: '15px 0', background: '#000', border: '1.5px solid #2CD3E1', color: '#ffffff' }}
           />
           <button
             type="submit"
             style={{
               width: '100%',
-              padding: '16px',
-              background: '#0f0',
+              padding: '14px',
+              background: '#2CD3E1',
               color: '#000',
               border: 'none',
               fontWeight: 'bold',
+              fontSize: '20px',
               marginTop: '20px',
               cursor: 'pointer'
             }}
@@ -82,8 +83,8 @@ const Login = () => {
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '30px', color: '#666' }}>
-          New? <Link to="/signup" style={{ color: '#0f0' }}>Register</Link>
+        <p style={{ textAlign: 'center', marginTop: '30px', color: '#ffffffff' }}>
+          New? <Link to="/signup" style={{ color: '#2CD3E1' }}>Register</Link>
         </p>
       </div>
     </div>
