@@ -99,7 +99,7 @@ const Dashboard = () => {
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '100px 20px' }}>
         <h1 style={{ fontSize: '80px', color: '#0ff', margin: '40px 0' }}>{result.mood}</h1>
-        <p style={{ fontSize: '22px', color: '#aaa', margin: '40px 0', lineHeight: '1.8' }}>
+        <p style={{ fontSize: '22px', color: '#ffffffff', margin: '40px 0', lineHeight: '1.8' }}>
           {result.empathy}
         </p>
         <div style={{ background: '#111', padding: '30px', borderRadius: '16px', margin: '40px auto', maxWidth: '600px' }}>
@@ -119,8 +119,8 @@ const Dashboard = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: '100px 20px', textAlign: 'center' }}>
       <h1 style={{ fontSize: '48px', color: '#0ff', marginBottom: '60px' }}>How are you feeling?</h1>
-      <p style={{ color: '#666', marginBottom: '40px' }}>Question {step + 1} of 5</p>
-      <h2 style={{ fontSize: '28px', margin: '40px 0', lineHeight: '1.6' }}>
+      <p style={{ color: '#ffffffff', marginBottom: '40px' }}>Question {step + 1} of 5</p>
+      <h2 style={{ fontSize: '28px', margin: '40px 0', lineHeight: '1.6', color: '#2CD3E1' }}>
         {currentQuestions[step]}
       </h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', maxWidth: '700px', margin: '0 auto' }}>
@@ -144,7 +144,7 @@ const Dashboard = () => {
       </div>
       {step === 4 && (
         <div style={{ marginTop: '40px' }}>
-          <textarea value={journal} onChange={e => setJournal(e.target.value)} placeholder="Anything else on your mind?" style={{ width: '100%', height: '100px', background: '#000', color: '#0f0', border: '1px solid #333', padding: '16px', borderRadius: '12px' }} />
+          <textarea value={journal} onChange={e => setJournal(e.target.value)} placeholder="Anything else on your mind?" style={{ width: '100%', height: '100px', background: '#000', color: '#2CD3E1', border: '1px solid #333', padding: '16px', borderRadius: '12px' }} />
           <button onClick={analyzeMood} style={{ marginTop: '20px', padding: '16px 40px', background: '#0ff', color: '#000', border: 'none', borderRadius: '12px' }}>
             Analyze My Mood
           </button>
