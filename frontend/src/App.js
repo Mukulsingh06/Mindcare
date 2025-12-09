@@ -12,13 +12,9 @@ function App() {
   const token = localStorage.getItem('token');
 
   const Protected = ({ children }) => {
-    return token ? (
-      <div style={{ minHeight: '100vh', background: '#000', margin: 0, padding: 0 }}>
-        <Navbar />
-        {children}
-      </div>
-    ) : <Navigate to="/login" replace />;
-  };
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/login" replace />;
+};
 
   return (
     <BrowserRouter>
