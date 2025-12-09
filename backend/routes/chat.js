@@ -1,4 +1,3 @@
-// backend/routes/chat.js
 const express = require('express');
 const router = express.Router();
 
@@ -12,25 +11,19 @@ router.post('/query', async (req, res) => {
   try {
     const key = process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY;
     if (!key) {
-      return res.json({ response: "I'm here with you. How can I support you today?" });
+      // Return this specific response if the keys are missing
+      return res.json({ response: "I'm here with you. How can I support you today? (API Key missing)" });
     }
 
     let url, body;
-    if (key.startsWith('sk-')) {
-      // OpenAI fallback
-      url = 'https://api.openai.com/v1/chat/completions';
+    let reply = "I'm here with you. Tell me more about that."; 
+    
+    if (process.env.GEMINI_API_KEY) {
+      url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${key}`;
       body = {
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: `You are a warm counselor. Respond kindly: ${message}` }],
-        max_tokens: 150
+        contents: [{ role: "user", parts: [{ text: `Be a caring counselor. Respond concisely and empathetically to the user's message: ${message}` }] }]
       };
-    } else {
-      // Gemini
-      url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${key}`;
-      body = {
-        contents: [{ role: "user", parts: [{ text: `Be a caring counselor: ${message}` }] }]
-      };
-    }
+    } 
 
     const response = await fetch(url, {
       method: 'POST',
@@ -39,18 +32,22 @@ router.post('/query', async (req, res) => {
     });
 
     const data = await response.json();
-
-    let reply = "I'm here for you.";
-
-    if (data.choices?.[0]?.message?.content) {
-      reply = data.choices[0].message.content.trim();
-    } else if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      reply = data.candidates[0].content.parts[0].text.trim();
+    
+    if (data.error) {
+        console.error("Gemini API Error Response:", data.error);
+        return res.status(500).json({ 
+            response: `I encountered an issue connecting to the core server: ${data.error.message}` 
+        });
     }
 
+    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      reply = data.candidates[0].content.parts[0].text.trim();
+    } 
+
     res.json({ response: reply });
+    
   } catch (error) {
-    console.log("AI Error:", error.message);
+    console.error("AI Error:", error.message);
     res.json({ response: "I'm still here with you, even when the connection is weak. You're not alone." });
   }
 });

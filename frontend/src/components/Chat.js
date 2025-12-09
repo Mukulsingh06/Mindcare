@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // ← THIS LINE WAS MISSING
+import { useNavigate } from 'react-router-dom'; 
 
 const Chat = () => {
   const [input, setInput] = useState('');
@@ -55,10 +55,9 @@ const Chat = () => {
     <div style={{
       minHeight: '100vh',
       background: '#000',
-      color: '#0f0',
+      color: 'hsla(0, 0%, 100%, 1.00)',
       fontFamily: "'Courier New', monospace",
-      paddingTop: '80px',
-      paddingLeft: '280px',
+      padding: '120px 40px',
       display: 'flex',
       flexDirection: 'column'
     }}>
@@ -66,9 +65,9 @@ const Chat = () => {
         <h1 style={{
           textAlign: 'center',
           letterSpacing: '12px',
-          fontSize: '42px',
+          fontSize: '60px',
           marginBottom: '40px',
-          color: '#0ff'
+          color: '#ffffff'
         }}>
           COUNSELOR
         </h1>
@@ -110,8 +109,8 @@ const Chat = () => {
                 <div style={{
                   display: 'inline-block',
                   padding: '16px 20px',
-                  background: msg.role === 'user' ? '#0ff' : '#222',
-                  color: msg.role === 'user' ? '#000' : '#0f0',
+                  background: msg.role === 'user' ? 'rgba(255, 255, 255, 1)' : '#000000ff',
+                  color: msg.role === 'user' ? '#000000ff' : 'rgba(255, 255, 255, 1)',
                   borderRadius: '20px',
                   borderBottomRightRadius: msg.role === 'user' ? '4px' : '20px',
                   borderBottomLeftRadius: msg.role === 'user' ? '20px' : '4px',
@@ -137,7 +136,7 @@ const Chat = () => {
                 background: '#222',
                 borderRadius: '20px',
                 borderBottomLeftRadius: '4px',
-                color: '#0ff'
+                color: '#07a0ff'
               }}>
                 thinking<span style={{ animation: 'blink 1.5s infinite' }}>...</span>
               </div>
@@ -162,7 +161,7 @@ const Chat = () => {
               background: '#000',
               border: '1px solid #333',
               borderRadius: '16px',
-              color: '#0f0',
+              color: 'rgba(255, 255, 255, 1)',
               fontSize: '16px',
               outline: 'none',
               fontFamily: 'inherit'
@@ -175,7 +174,7 @@ const Chat = () => {
             disabled={isTyping || !input.trim()}
             style={{
               padding: '18px 32px',
-              background: (isTyping || !input.trim()) ? '#333' : '#0ff',
+              background: (isTyping || !input.trim()) ? '#333' : '#007aff',
               color: '#000',
               border: 'none',
               borderRadius: '16px',

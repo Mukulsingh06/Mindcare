@@ -1,4 +1,3 @@
-// src/components/Login.js — FINAL WORKING VERSION
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,27 +11,16 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();               // ← THIS STOPS PAGE RELOAD
+    e.preventDefault();
     setLoading(true);
     setMsg('');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password
-      });
-
-      // Save token immediately
+      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
-
-      setMsg('Welcome back!');
-      
-      // Force redirect after small delay so UI updates
-      setTimeout(() => {
-        navigate('/dashboard', { replace: true });
-      }, 800);
-
-    } catch (err) {
+      setMsg('Welcome back');
+      setTimeout(() => navigate('/dashboard', { replace: true }), 800);
+    } catch {
       setMsg('Invalid email or password');
     } finally {
       setLoading(false);
@@ -42,32 +30,41 @@ const Login = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#b3c6c4',
-      color: '#0ff',
-      fontFamily: "'Courier New', monospace",
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #000 100%)',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      padding: '20px'
     }}>
-      <motion.div style={{
-        border: '3px solid #0B2443',
-        borderRadius: '20px',
-        padding: '60px',
-        background: '#b3c6c4',
-        // boxShadow: '0 0 30px #0ff',
-        width: '420px'
-      }}>
-        <h1 style={{ textAlign: 'center', letterSpacing: '10px', marginBottom: '40px' , color:"#0B2443" , fontSize: '46px', fontWeight: 'bold', zIndex: '1', opacity: '1'}}>
-          MINDCARE
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        style={{
+          width: '100%',
+          maxWidth: '380px',
+          background: 'rgba(30, 30, 30, 0.6)',
+          backdropFilter: 'blur(30px)',
+          borderRadius: '28px',
+          padding: '60px 40px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)'
+        }}
+      >
+        <h1 style={{
+          fontSize: '38px',
+          fontWeight: 600,
+          textAlign: 'center',
+          letterSpacing: '-1px',
+          marginBottom: '50px',
+          background: 'linear-gradient(90deg, #fff, #aaa)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent'
+        }}>
+          MindCare
         </h1>
 
         {msg && (
-          <p style={{ 
-            textAlign: 'center', 
-            color: msg.includes('Welcome') ? '#0B2443' : '#f00',
-            marginBottom: '20px',
-            fontWeight: 'bold'
-          }}>
+          <p style={{ textAlign: 'center', marginBottom: '20px', color: msg.includes('Welcome') ? '#30d158' : '#ff453a', fontWeight: 'bold' }}>
             {msg}
           </p>
         )}
@@ -77,39 +74,62 @@ const Login = () => {
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            placeholder="email@college.edu"
+            placeholder="Email"
             required
-            disabled={loading}
-            style={{ width: '100%', padding: '16px', margin: '15px 0', background: 'transparent', border: '1px solid #333', color: '#0B2443' }}
+            style={{
+              width: '100%',
+              padding: '16px 20px',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '16px',
+              color: '#fff',
+              fontSize: '17px',
+              marginBottom: '16px',
+              outline: 'none'
+            }}
           />
           <input
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            placeholder="password"
+            placeholder="Password"
             required
-            disabled={loading}
-            style={{ width: '100%', padding: '16px', margin: '15px 0', background: 'transparent', border: '1px solid #333', color: '#0B2443' }}
+            style={{
+              width: '100%',
+              padding: '16px 20px',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '16px',
+              color: '#fff',
+              fontSize: '17px',
+              marginBottom: '30px',
+              outline: 'none'
+            }}
           />
-          <button
+
+          <motion.button
+            whileTap={{ scale: 0.96 }}
             type="submit"
             disabled={loading}
             style={{
               width: '100%',
               padding: '16px',
-              background: loading ? '#ffffff' : '#0B2443',
-              color: '#ffffff',
+              background: '#007aff',
+              color: '#fff',
               border: 'none',
-              fontWeight: '100',
-              cursor: loading ? 'not-allowed' : 'pointer'
+              borderRadius: '16px',
+              fontSize: '17px',
+              fontWeight: 600,
+              cursor: loading ? 'not-allowed' : 'pointer',
+              boxShadow: '0 8px 20px rgba(0, 122, 255, 0.3)'
             }}
           >
-            {loading ? 'ENTERING...' : 'ENTER'}
-          </button>
+            {loading ? 'Signing in...' : 'Sign In'}
+          </motion.button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '30px', color: '#0B2443' }}>
-          New here? <Link to="/signup" style={{ color: '#0B2443' }}>Register</Link>
+        <p style={{ textAlign: 'center', marginTop: '40px', color: '#888', fontSize: '15px' }}>
+          New here? <Link to="/signup" style={{ color: '#007aff', textDecoration: 'none' }}>Create account</Link>
         </p>
       </motion.div>
     </div>

@@ -50,14 +50,13 @@ const Profile = () => {
     <div style={{
       minHeight: '100vh',
       background: '#000',
-      color: '#0f0',
+      color: 'rgba(255, 255, 255, 1)',
       fontFamily: "'Courier New', monospace",
-      paddingTop: '120px',
-      paddingLeft: '300px',
+      padding: '120px 40px',
       textAlign: 'center'
     }}>
       <motion.div style={{ maxWidth: '900px', margin: '0 auto', padding: '40px' }}>
-        <h1 style={{ fontSize: '48px', letterSpacing: '15px', marginBottom: '60px' }}>
+        <h1 style={{ fontSize: '48px', letterSpacing: '15px', marginBottom: '60px' , fontWeight: 550}}>
           YOUR MIND JOURNEY
         </h1>
 
@@ -78,7 +77,7 @@ const Profile = () => {
                   border: '1px solid #333'
                 }}
               >
-                <h2 style={{ color: '#0ff', fontSize: '32px', marginBottom: '15px' }}>
+                <h2 style={{ color: 'rgba(255, 255, 255, 1)', fontSize: '32px', marginBottom: '15px' }}>
                   {entry.mood || 'Unknown Mood'}
                 </h2>
                 {entry.exercise && (
@@ -87,7 +86,7 @@ const Profile = () => {
                   </p>
                 )}
                 {entry.quote && (
-                  <p style={{ color: '#0f0', fontStyle: 'italic', fontSize: '20px', marginTop: '20px' }}>
+                  <p style={{ color: 'rgba(255, 255, 255, 1)', fontStyle: 'italic', fontSize: '20px', marginTop: '20px' }}>
                     "{entry.quote}"
                   </p>
                 )}
@@ -119,13 +118,18 @@ const Profile = () => {
           <button
             onClick={logout}
             style={{
-              padding: '16px 40px',
-              background: '#0ff',
-              color: '#000',
-              border: 'none',
-              borderRadius: '12px',
-              fontWeight: 'bold'
-            }}
+                  display: 'inline-block',
+                  padding: '18px 40px',
+                  background: '#007aff',
+                  color: '#fff',
+                  borderRadius: '18px',
+                  textDecoration: 'none',
+                  fontWeight: 550,
+                  letterSpacing: '5px',
+                  fontSize: '20px',
+                  boxShadow: '0 10px 30px rgba(0, 122, 255, 0.4)',
+                  transition: 'all 0.3s'
+                }}
           >
             LOGOUT
           </button>
