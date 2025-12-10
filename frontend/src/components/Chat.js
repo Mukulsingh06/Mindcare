@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; 
 
 const Chat = () => {
   const [input, setInput] = useState('');
@@ -11,15 +10,9 @@ const Chat = () => {
   });
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
-  const navigate = useNavigate(); // ← Now defined
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  // Save chat to localStorage on every change
-  useEffect(() => {
     localStorage.setItem('mindcare_chat', JSON.stringify(messages));
   }, [messages]);
 
@@ -33,19 +26,13 @@ const Chat = () => {
 
     try {
       const res = await axios.post('http://localhost:5000/api/chat/query', { message: input.trim() });
-
-      const aiReply = res.data.response || "I'm here with you.";
-
       setTimeout(() => {
-        setMessages(prev => [...prev, { role: 'ai', text: aiReply }]);
+        setMessages(prev => [...prev, { role: 'ai', text: res.data.response }]);
         setIsTyping(false);
-      }, 800 + Math.random() * 600);
-    } catch (error) {
+      }, 1000);
+    } catch {
       setTimeout(() => {
-        setMessages(prev => [...prev, { 
-          role: 'ai', 
-          text: "I'm still here for you, even if the connection is weak right now." 
-        }]);
+        setMessages(prev => [...prev, { role: 'ai', text: "I'm here with you." }]);
         setIsTyping(false);
       }, 1000);
     }
@@ -54,52 +41,44 @@ const Chat = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#000',
-      color: 'hsla(0, 0%, 100%, 1.00)',
-      fontFamily: "'Courier New', monospace",
+      background: 'linear-gradient(135deg, #fffaf0 0%, #fdf4e8 100%)',
       padding: '120px 40px',
-      display: 'flex',
-      flexDirection: 'column'
+      paddingLeft: '340px'
     }}>
-      <div style={{ flex: 1, padding: '40px', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+      <motion.div style={{ maxWidth: '900px', margin: '0 auto' }}>
         <h1 style={{
+          fontSize: '56px',
+          fontWeight: 700,
           textAlign: 'center',
-          letterSpacing: '12px',
-          fontSize: '60px',
-          marginBottom: '40px',
-          color: '#ffffff'
+          marginBottom: '60px',
+          background: 'linear-gradient(90deg, #ff8c42, #ff5e78)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent'
         }}>
-          COUNSELOR
+          Counselor
         </h1>
 
-        {/* Messages Container */}
-        <div style={{
-          height: 'calc(100vh - 300px)',
-          overflowY: 'auto',
-          background: '#111',
-          borderRadius: '16px',
-          padding: '30px',
-          marginBottom: '20px',
-          border: '1px solid #222'
+        <div className="scroll-container" style={{
+          height: 'calc(100vh - 280px)',
+          background: '#ffffff',
+          borderRadius: '28px',
+          padding: '40px',
+          marginBottom: '30px',
+          boxShadow: '0 20px 50px rgba(255, 140, 66, 0.15)',
+          border: '1px solid rgba(255, 140, 66, 0.2)'
         }}>
           {messages.length === 0 ? (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              style={{ textAlign: 'center', color: '#555', marginTop: '120px', fontSize: '18px' }}
-            >
-              Begin when you're ready.<br />
-              I'm here to listen.
-            </motion.p>
+            <p style={{ textAlign: 'center', color: '#888', marginTop: '100px', fontSize: '20px' }}>
+              Begin when you're ready.<br />I'm here to listen.
+            </p>
           ) : (
             messages.map((msg, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
                 style={{
-                  margin: '20px 0',
+                  margin: '30px 0',
                   textAlign: msg.role === 'user' ? 'right' : 'left',
                   maxWidth: '80%',
                   marginLeft: msg.role === 'user' ? 'auto' : '0',
@@ -108,91 +87,58 @@ const Chat = () => {
               >
                 <div style={{
                   display: 'inline-block',
-                  padding: '16px 20px',
-                  background: msg.role === 'user' ? 'rgba(255, 255, 255, 1)' : '#000000ff',
-                  color: msg.role === 'user' ? '#000000ff' : 'rgba(255, 255, 255, 1)',
-                  borderRadius: '20px',
-                  borderBottomRightRadius: msg.role === 'user' ? '4px' : '20px',
-                  borderBottomLeftRadius: msg.role === 'user' ? '20px' : '4px',
-                  fontSize: '16px',
-                  lineHeight: '1.5'
+                  padding: '20px 28px',
+                  background: msg.role === 'user' ? '#ff8c42' : '#fff8f0',
+                  color: msg.role === 'user' ? '#fff' : '#2d1b0f',
+                  borderRadius: '28px',
+                  fontSize: '18px',
+                  lineHeight: '1.6',
+                  boxShadow: '0 8px 20px rgba(0,0,0,0.08)'
                 }}>
                   {msg.text}
                 </div>
               </motion.div>
             ))
           )}
-
-          {/* Typing Indicator */}
-          {isTyping && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              style={{ textAlign: 'left', margin: '20px 0' }}
-            >
-              <div style={{
-                display: 'inline-block',
-                padding: '16px 20px',
-                background: '#222',
-                borderRadius: '20px',
-                borderBottomLeftRadius: '4px',
-                color: '#07a0ff'
-              }}>
-                thinking<span style={{ animation: 'blink 1.5s infinite' }}>...</span>
-              </div>
-            </motion.div>
-          )}
-
+          {isTyping && <p style={{ color: '#ff8c42' }}>Counselor is typing...</p>}
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '20px' }}>
           <input
-            type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
-            placeholder="Share what's on your mind..."
-            disabled={isTyping}
+            onChange={e => setInput(e.target.value)}
+            onKeyPress={e => e.key === 'Enter' && sendMessage()}
+            placeholder="Share your thoughts..."
             style={{
               flex: 1,
-              padding: '18px 20px',
-              background: '#000',
-              border: '1px solid #333',
-              borderRadius: '16px',
-              color: 'rgba(255, 255, 255, 1)',
-              fontSize: '16px',
-              outline: 'none',
-              fontFamily: 'inherit'
+              padding: '20px 28px',
+              background: '#ffffff',
+              border: '2px solid rgba(255, 140, 66, 0.3)',
+              borderRadius: '28px',
+              fontSize: '18px',
+              outline: 'none'
             }}
           />
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={sendMessage}
-            disabled={isTyping || !input.trim()}
             style={{
-              padding: '18px 32px',
-              background: (isTyping || !input.trim()) ? '#333' : '#007aff',
-              color: '#000',
+              padding: '20px 40px',
+              background: 'linear-gradient(90deg, #ff8c42, #ff5e78)',
+              color: '#fff',
               border: 'none',
-              borderRadius: '16px',
-              fontWeight: 'bold',
-              cursor: (isTyping || !input.trim()) ? 'not-allowed' : 'pointer'
+              borderRadius: '28px',
+              fontWeight: 600,
+              fontSize: '18px',
+              cursor: 'pointer'
             }}
           >
-            SEND
+            Send
           </motion.button>
         </div>
-      </div>
-
-      <style jsx>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0; }
-          50% { opacity: 1; }
-        }
-      `}</style>
+      </motion.div>
     </div>
   );
 };

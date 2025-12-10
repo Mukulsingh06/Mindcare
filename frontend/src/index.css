@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 * {
   margin: 0;
@@ -8,10 +8,27 @@
 
 html, body, #root {
   height: 100%;
-  background: #000;
-  color: #fff;
-  font-family: 'SF Pro Display', -apple-system, sans-serif;
+  background: linear-gradient(135deg, #fff8f0 0%, #fef7ec 100%);
+  color: #2d1b0f;
+  font-family: 'Inter', sans-serif;
   overflow: hidden;
 }
 
-::-webkit-scrollbar { display: none; }
+.scroll-container {
+  overflow-y: auto;
+  max-height: 70vh;
+  padding-right: 10px;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #ff8c42;
+  border-radius: 10px;
+}

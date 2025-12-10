@@ -1,3 +1,4 @@
+// backend/routes/chat.js  ← REPLACE ENTIRE FILE WITH THIS
 const express = require('express');
 const router = express.Router();
 
@@ -5,50 +6,60 @@ router.post('/query', async (req, res) => {
   const { message } = req.body;
 
   if (!message?.trim()) {
-    return res.json({ response: "I'm listening... How are you feeling?" });
+    return res.json({ response: "Hey, I'm here. How are you feeling?" });
+    return;
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+
+  if (!apiKey) {
+    console.log("No Gemini key in .env");
+    return res.json({ response: "I'm having a tiny connection issue, but I'm still here for you." });
   }
 
   try {
-    const key = process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY;
-    if (!key) {
-      // Return this specific response if the keys are missing
-      return res.json({ response: "I'm here with you. How can I support you today? (API Key missing)" });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: `You are a warm, caring counselor. Keep replies short and kind. Message: ${message}` }]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.9,
+            maxOutputTokens: 150
+          }
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log("Gemini API error:", response.status, errorText);
+      throw new Error(`HTTP ${response.status}`);
     }
-
-    let url, body;
-    let reply = "I'm here with you. Tell me more about that."; 
-    
-    if (process.env.GEMINI_API_KEY) {
-      url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${key}`;
-      body = {
-        contents: [{ role: "user", parts: [{ text: `Be a caring counselor. Respond concisely and empathetically to the user's message: ${message}` }] }]
-      };
-    } 
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
 
     const data = await response.json();
-    
-    if (data.error) {
-        console.error("Gemini API Error Response:", data.error);
-        return res.status(500).json({ 
-            response: `I encountered an issue connecting to the core server: ${data.error.message}` 
-        });
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+
+    if (!reply) {
+      console.log("Empty reply from Gemini");
+      throw new Error("No text returned");
     }
 
-    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      reply = data.candidates[0].content.parts[0].text.trim();
-    } 
-
+    console.log("Gemini reply:", reply); // ← You will see this in terminal
     res.json({ response: reply });
-    
-  } catch (error) {
-    console.error("AI Error:", error.message);
-    res.json({ response: "I'm still here with you, even when the connection is weak. You're not alone." });
+
+  } catch (err) {
+    console.log("Chat failed:", err.message);
+    res.json({ 
+      response: "I'm still right here with you, even if the connection is being slow today." 
+    });
   }
 });
 
