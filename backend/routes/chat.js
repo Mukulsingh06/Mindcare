@@ -1,4 +1,3 @@
-// backend/routes/chat.js  ← REPLACE ENTIRE FILE WITH THIS
 const express = require('express');
 const router = express.Router();
 
@@ -52,7 +51,7 @@ router.post('/query', async (req, res) => {
       throw new Error("No text returned");
     }
 
-    console.log("Gemini reply:", reply); // ← You will see this in terminal
+    console.log("Gemini reply:", reply);
     res.json({ response: reply });
 
   } catch (err) {

@@ -1,4 +1,3 @@
-// src/components/Signup.js — FINAL SUNRISE MASTERPIECE
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';

@@ -1,4 +1,3 @@
-// src/components/Dashboard.js — FINAL, GOD-TIER SUNRISE MASTERPIECE
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -144,7 +143,6 @@ Context: ${context}`
             textAlign: 'center'
           }}
         >
-          {/* Mood Title */}
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -163,7 +161,6 @@ Context: ${context}`
             {result.mood}
           </motion.h1>
 
-          // Exercise Card
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
@@ -189,7 +186,6 @@ Context: ${context}`
             </p>
           </motion.div>
 
-          {/* Quote */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -206,7 +202,6 @@ Context: ${context}`
             "{result.quote}"
           </motion.p>
 
-          {/* New Assessment Button */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -231,7 +226,6 @@ Context: ${context}`
     );
   }
 
-  // Inside your Dashboard return (the part where questions show)
 return (
   <div style={{
     minHeight: '100vh',
@@ -239,8 +233,8 @@ return (
     padding: '80px 40px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',     // ← Centers vertically
-    alignItems: 'center',         // ← Centers horizontally
+    justifyContent: 'center',  
+    alignItems: 'center',        
     textAlign: 'center'
   }}>
     <motion.div style={{ maxWidth: '900px', width: '100%' }}>
@@ -273,7 +267,6 @@ return (
         Question {step + 1} of 5
       </motion.p>
 
-      {/* THIS IS THE PERFECTLY CENTERED QUESTION */}
       <motion.h2
         key={step}
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -298,7 +291,6 @@ return (
         {currentQuestions[step]}
       </motion.h2>
 
-      {/* Answer Buttons */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(5, 1fr)',
@@ -330,7 +322,6 @@ return (
         ))}
       </div>
 
-      {/* Journal + Final Button */}
       <AnimatePresence>
         {step === 4 && (
           <motion.div

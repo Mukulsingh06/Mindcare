@@ -1,10 +1,8 @@
-// backend/routes/mood.js
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Middleware to verify token
 const auth = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token' });
@@ -17,7 +15,6 @@ const auth = (req, res, next) => {
   }
 };
 
-// Get all mood logs
 router.get('/logs', auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -27,7 +24,6 @@ router.get('/logs', auth, async (req, res) => {
   }
 });
 
-// Save a mood log
 router.post('/log', auth, async (req, res) => {
   const { mood, notes } = req.body;
   try {

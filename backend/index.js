@@ -10,12 +10,10 @@ const app = express();
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log('MongoDB Error:', err));
 
-// Routes — THESE MUST BE EXACT
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/mood', require('./routes/mood'));
 app.use('/api/chat', require('./routes/chat'));
