@@ -40,7 +40,6 @@ router.post('/log', auth, async (req, res) => {
   }
 });
 
-// DELETE ALL MOOD HISTORY ← THIS WAS MISSING!
 router.delete('/delete-history', auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
